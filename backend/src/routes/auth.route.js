@@ -9,9 +9,8 @@ import { verifyJWT } from "../middleware/verifyJWT.js";
 import { rateLimit } from "../middleware/ratelimit.js";
 
 const route = Router();
-route.get("/test", rateLimit, (req, res) => {
-  res.send("testing routes");
-});
+route.use(rateLimit)
+
 route.post("/signup", signup);
 route.post("/login", login);
 route.post("/logout", logout);
