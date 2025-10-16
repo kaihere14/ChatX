@@ -92,7 +92,7 @@ export const login = async (req, res) => {
         return res.status(400).json({ error: "Invalid email or password" });
       }
   
-     const {accessToken,refreshToken} = await generateTokens(user?.id)
+      const {accessToken,refreshToken} = await generateTokens(user._id)
 
      
      const option = {
