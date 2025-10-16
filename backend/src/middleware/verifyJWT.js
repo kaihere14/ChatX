@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-
 import "dotenv/config";
+import { User } from "../model/user.model.js";
+
 export const verifyJWT = async (req, res, next) => {
   const accessToken = req.cookies.accessToken;
 
@@ -14,7 +15,9 @@ export const verifyJWT = async (req, res, next) => {
         accessToken,
         process.env.ACCESS_TOKEN_SECRET
       );
-      req.id = decoded_token.id;
+
+      const user = await User.findById(decoded_token.id);
+      req.user = user;
       return next();
     } catch (error) {
       return res.status(401).json({ message: "unauthorized request" });
