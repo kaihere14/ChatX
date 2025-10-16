@@ -5,15 +5,18 @@ import { sendSignupEmail } from "./email.controller.js";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 
-const generateTokens = async (email) => {
-  const user = await User.findOne({ email });
+if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
+     throw new Error("JWT secret environment variables are not defined");
+    }
+
+const generateTokens = async (userId) => {
   const accessToken = jwt.sign(
-    { id: user._id },
+    { id: userId },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: "15m" }
   );
   const refreshToken = jwt.sign(
-    { id: user._id },
+    { id: userId },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: "7d" }
   );
@@ -48,13 +51,19 @@ export const signup = async (req, res) => {
       password,
     });
 
-    const { accessToken, refreshToken } = await generateTokens(email);
+    const option = {
+        httpOnly : true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite : "strict"
+    }
+
+    const { accessToken, refreshToken } = generateTokens(user2._id);
 
     const mailSend = await sendSignupEmail(user2.email, user2.fullName);
 
-    console.log("✅ Signup data:", user2, accessToken, refreshToken);
-    res.cookie("accessToken", accessToken);
-    res.cookie("refreshToken", refreshToken);
+    console.log("✅ Signup data:", user2.email,user2.fullName);
+    res.cookie("accessToken", accessToken,option);
+    res.cookie("refreshToken", refreshToken,option);
     res.status(200).json({ message: "Signup data is valid!" });
   } catch (error) {
     console.error("Signup error:", error);
