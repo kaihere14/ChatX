@@ -13,5 +13,9 @@ route.post("/signup", signup);
 route.post("/login", login);
 route.post("/logout", logout);
 route.post("/update-profile", verifyJWT, profileUpdate);
+route.get("/update-profile", verifyJWT, (req,res)=>{
+    res.status(200).json(req.user)
+});
+
 
 export default route;
