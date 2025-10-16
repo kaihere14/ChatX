@@ -1,11 +1,12 @@
 import express from "express";
 import "dotenv/config";
 import path from "path";
+import cookieParser from "cookie-parser";
 const app = express();
 const __dirname = path.resolve();
 
 app.use(express.json());
-
+app.use(cookieParser())
 import auth from "./routes/auth.route.js";
 import message from "./routes/message.route.js";
 import { connectDB } from "./database/index.js";
