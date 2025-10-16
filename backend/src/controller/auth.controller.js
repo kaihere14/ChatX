@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { User } from "../model/user.model.js";
 import { sendSignupEmail } from "./email.controller.js";
 import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
+
 
 if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
         throw new Error("JWT secret environment variables are not defined");
