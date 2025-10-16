@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { rateLimit } from "../middleware/ratelimit";
+import { rateLimit } from "../middleware/ratelimit.js";
 
 const route = Router();
 route.use(rateLimit);
