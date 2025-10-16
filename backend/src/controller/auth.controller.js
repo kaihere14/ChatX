@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 
 if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
-     throw new Error("JWT secret environment variables are not defined");
+        throw new Error("JWT secret environment variables are not defined");
     }
 
 const generateTokens = async (userId) => {
@@ -70,3 +70,62 @@ export const signup = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+
+      if (!email || !password) {
+        return res.status(400).json({ error: "Email and password are required" });
+      }
+  
+
+      const user = await User.findOne({ email }).select("+password");
+      if (!user) {
+        return res.status(400).json({ error: "Invalid email or password" });
+      }
+  
+
+      const isMatch = await user.comparePassword(password);
+      if (!isMatch) {
+        return res.status(400).json({ error: "Invalid email or password" });
+      }
+  
+      const {accessToken,refreshToken} = await generateTokens(user._id)
+
+     
+     const option = {
+        httpOnly : true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite : "strict"
+    }
+
+    res.cookie("accessToken", accessToken,option);
+    res.cookie("refreshToken", refreshToken,option);
+
+      res.status(200).json({message: "Login successful",});
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        expires: new Date(0), // expire immediately
+      };
+      res.cookie("accessToken", "", cookieOptions);
+      res.cookie("refreshToken", "", cookieOptions);
+  
+      res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+      console.error("Logout error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+};
+
