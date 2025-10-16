@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { User } from "../model/user.model.js";
 import { sendSignupEmail } from "./email.controller.js";
 import jwt from "jsonwebtoken";
+import cloudinary from "../database/cloudinary.js";
 
 
 if (!process.env.ACCESS_TOKEN_SECRET || !process.env.REFRESH_TOKEN_SECRET) {
@@ -131,6 +132,21 @@ export const logout = async (req, res) => {
 
 
 export const profileUpdate = async(req,res)=>{
-  return res.status(200).json({message:"under construction"})
+  try {
+    const {profilePic} = req.body
+    if(!profilePic){
+      return res.status(400).json({message:"Profile pic is required"})
+    }
+    const userId = req.user._id
+
+    const uploadResponse = await cloudinary.uploader.upload(profilePic)
+
+    const updatedUser =await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.secure_url},{new:true})
+    
+    return res.status(200).json(updatedUser)
+  } catch (error) {
+    return res.status(500).json({message:"Internal server error"})
+    
+  }
 }
 
