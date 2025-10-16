@@ -129,3 +129,8 @@ export const logout = async (req, res) => {
     }
 };
 
+
+export const profileUpdate = async(req,res)=>{
+  return res.status(200).json({message:"under construction"})
+}
+
