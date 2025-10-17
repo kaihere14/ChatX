@@ -62,10 +62,18 @@ export const signup = async (req, res) => {
 
     const mailSend = await sendSignupEmail(user2.email, user2.fullName);
 
-    console.log("✅ Signup data:", user2.email,user2.fullName);
+
     res.cookie("accessToken", accessToken,option);
     res.cookie("refreshToken", refreshToken,option);
-    res.status(200).json({ message: "Signup data is valid!" });
+    res.status(200).json({ 
+            message: "Signup data is valid!",
+            user: {
+              _id: user2._id,
+              fullName: user2.fullName,
+              email: user2.email,
+              profilePic: user2.profilePic
+            }
+        });
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -105,7 +113,16 @@ export const login = async (req, res) => {
     res.cookie("accessToken", accessToken,option);
     res.cookie("refreshToken", refreshToken,option);
 
-      res.status(200).json({message: "Login successful",});
+    res.status(200).json({ 
+            message: "Login successful",
+            user: {
+              _id: user._id,
+              fullName: user.fullName,
+            email: user.email,
+              profilePic: user.profilePic
+            }
+          });
+      
     } catch (error) {
       console.error("Login error:", error);
       res.status(500).json({ error: "Internal server error" });
