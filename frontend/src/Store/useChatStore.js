@@ -10,11 +10,13 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
-  isSoundEnabled: localStorage.getItem("isSoundEnabled") === true,
+  isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) ?? true,
 
   toggleSound: () => {
-    localStorage.setItem("isSoundEnabled", !get().isSoundEnabled);
-    set({ isSoundEnabled: !get().isSoundEnabled });
+    const current = get().isSoundEnabled;
+    const next = !current;
+    localStorage.setItem("isSoundEnabled", JSON.stringify(next));
+    set({ isSoundEnabled: next });
   },
 
   setActiveTab: (tab) => {
@@ -28,7 +30,7 @@ export const useChatStore = create((set, get) => ({
   getAllContact: async () => {
     try {
       set({ isUsersLoading: true });
-      const { data } = await axiosInstance.post("/message/contacts");
+      const { data } = await axiosInstance.get("/message/contacts");
       set({ allContact: data });
     } catch (error) {
       const message =
@@ -42,7 +44,7 @@ export const useChatStore = create((set, get) => ({
   getMyChat: async () => {
     try {
       set({ isUsersLoading: true });
-      const { data } = await axiosInstance.post("/message/chats");
+      const { data } = await axiosInstance.get("/message/chats");
       set({ chats: data });
     } catch (error) {
       const message = error?.response?.data?.error || "Failed to fetch chats";

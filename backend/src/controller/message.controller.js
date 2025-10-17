@@ -3,12 +3,14 @@ import { User } from "../model/user.model.js";
 import cloudinary from "../database/cloudinary.js";
 
 export const getAllContacts = async (req, res) => {
+  
   try {
     const loggedUser = req.user._id;
     const filteredUser = await User.find({ _id: { $ne: loggedUser } }).select(
       "-password"
     );
-    return res.status(200).json({ filteredUser });
+
+    return res.status(200).json( filteredUser );
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }
@@ -50,14 +52,12 @@ export const sendMsg = async (req, res) => {
         .status(400)
         .json({ message: "Cannot send message to youreself" });
     }
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid receiver ID" });
-    }
-
+  
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
+
     const message = await Message.create({
       text,
       senderId: loggedId,

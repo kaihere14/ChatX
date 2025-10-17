@@ -10,7 +10,7 @@ import { verifyJWT } from "../middleware/verifyJWT.js";
 
 const route = Router();
 
-route.use(rateLimit, verifyJWT);
+route.use( verifyJWT);
 
 route.get("/contacts", getAllContacts);
 route.get("/chats", chats);

@@ -1,8 +1,101 @@
+import {useRef,useState} from "react"
+import { LogOutIcon, VolumeOffIcon , VolumeIcon} from "lucide-react";
+import PageLoader from "./Pageloader.jsx";
 import React from 'react'
+import {useAuthStore} from "../Store/useStoreAuth.js"
+
+import { useChatStore } from '../Store/useChatStore.js'
 
 const ProfileHeader = () => {
+  const {logout,authUser,updateProfile,photoUploading} = useAuthStore()
+  const{isSoundEnabled,toggleSound}=useChatStore()
+  const [selectedImg, setSelectedImg] = useState(null)
+  const mouseClickSound =  new Audio("/sounds/click.mp3")
+
+  const fileInputRef = useRef(null)
+
+  const handleImageInput = (e)=>{
+    const file = e.target.files[0]
+    if(!file){
+      return
+    }
+    const reader = new FileReader()
+      reader.readAsDataURL(file)
+    
+
+    reader.onloadend = async()=>{
+      const base64Image = reader.result
+      setSelectedImg(base64Image)
+      await updateProfile({profilePic:base64Image})
+    }
+  }
   return (
-    <div>ProfileHeader</div>
+    <div className="pt-6 px-3 border-b-slate-700/50 ">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div className=" avatar avatar-online ">
+            
+              <button
+                type="button"
+                className="size-12 cursor-pointer rounded-full overflow-hidden relative group"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {photoUploading&&<div className="absolute z-[999] h-full  w-full  bg-white/10 rounded-full backdrop-blur-[1px]">
+                  <span className="loading loading-spinner loading-xl mt-2"></span>
+                </div>}
+                <img
+                  src={
+                    selectedImg ||
+                    authUser?.profilePic ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKaiKiPcLJj7ufrj6M2KaPwyCT4lDSFA5oog&s"
+                  }
+                  alt={authUser?.name ? `${authUser.name}'s avatar` : "User avatar"}
+                  className="w-full h-full object-cover cursor-pointer transition-transform duration-200 group-hover:scale-105"
+                />
+                {/* Optional hover overlay for better UX */}
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs transition-opacity">
+                  Change
+                </div>
+              </button>
+
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={(e)=>{handleImageInput(e)}}
+                className="hidden"
+              />
+            </div>
+
+            {/* Username */}
+            <div className="text-slate-200 font-medium text-base max-w-[180px] truncate">
+              <h3>{authUser.fullName}</h3>
+              <p className="text-slate-400 text-sm">Online</p>
+            </div>
+        </div>
+
+        <div className="flex gap-3">
+          <p className="text-gray-400 cursor-pointer hover:text-white" onClick={logout}><LogOutIcon/></p>
+          <button
+            className="text-slate-400 hover:text-slate-200 transition-colors"
+            onClick={() => {
+              // play click sound before toggling
+              mouseClickSound.currentTime = 0; // reset to start
+              mouseClickSound.play().catch((error) => console.log("Audio play failed:", error));
+              toggleSound();
+            }}
+          >
+            {isSoundEnabled ? (
+              <VolumeIcon className="size-6" />
+            ) : (
+              <VolumeOffIcon className="size-6" />
+            )}
+          </button>
+        </div>
+      </div>
+      <hr className="text-gray-400/40 mt-2" />
+    </div>
   )
 }
 
