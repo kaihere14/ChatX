@@ -18,6 +18,7 @@ export const getAllContacts = async (req, res) => {
 
 export const getMessageBId = async (req, res) => {
   try {
+
     const loggedId = req.user._id;
 
     const { id } = req.params;

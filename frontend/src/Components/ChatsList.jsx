@@ -3,14 +3,16 @@ import { useChatStore } from '../Store/useChatStore'
 import PageLoader from './Pageloader'
 
 const ChatsList = () => {
- const {getMyChat,isUsersLoading,chats,setSelectedUser}  = useChatStore()
- 
-  useEffect(()=>{
+const {getMyChat,isUsersLoading,chats,setSelectedUser}  = useChatStore()
+
+
+useEffect(()=>{
     getMyChat()
   },[])
 
 
-  if(chats.length===0){
+
+if(chats.length===0){
     return(
       <div className='h-full w-full flex justify-center items-center'>
         <span className="">No Chats found</span> 
@@ -18,15 +20,16 @@ const ChatsList = () => {
     )
   }
 
-  if(isUsersLoading){
-    return(
-      <div className='h-full w-full flex justify-center items-center'>
+if(isUsersLoading){
+  return(
+    <div className='h-full w-full flex justify-center items-center'>
         <span className="loading loading-spinner loading-xl mt-2"></span> 
-      </div>
-    )
-   }
-    return (
-      <div className='flex flex-col gap-3'>
+    </div>
+  )
+}
+
+return (
+    <div className='flex flex-col gap-3'>
         {chats.map((val)=>(
           <div onClick={()=>setSelectedUser(val)} key={val._id} className='cursor-pointer w-full h-20 bg-[#431c4c] hover:bg-[#2c1830] rounded-2xl flex items-center p-4'>
             <div className='h-10 w-10 rounded-full bg-green-200 overflow-hidden '>
@@ -42,9 +45,8 @@ const ChatsList = () => {
             </div>
         </div>
         ))}
-  
-      </div>
-    )
+    </div>
+)
 }
 
 export default ChatsList
