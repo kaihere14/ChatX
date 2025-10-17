@@ -6,7 +6,7 @@ const ContactList = () => {
  
   useEffect(()=>{
     getAllContact()
-  },[])
+  },[getAllContact])
 
  
  if(isUsersLoading){

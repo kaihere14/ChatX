@@ -1,8 +1,8 @@
 import React from 'react'
-import { useChatStore } from '../Store/useChatStore'
+// import { useChatStore } from '../Store/useChatStore'
 
 const ChatContainer = () => {
-  const {selectedUser} = useChatStore()
+  // const {selectedUser} = useChatStore()
   return (
     <div>ChatContainer</div>
   )
