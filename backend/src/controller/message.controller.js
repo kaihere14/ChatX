@@ -40,6 +40,20 @@ export const sendMsg = async (req, res) => {
     const { id } = req.params;
     let imageUrl;
 
+    if (!text && !image) {
+      return res
+        .status(400)
+        .json({ message: "Message must contain text or image" });
+    }
+    if (loggedId === id) {
+      return res
+        .status(400)
+        .json({ message: "Cannot send message to youreself" });
+    }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid receiver ID" });
+    }
+
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
@@ -73,7 +87,9 @@ export const chats = async (req, res) => {
         )
       ),
     ];
-    const chatPartners = await User.find({ _id: { $in: chatPartnerIds } }).select("-password");
+    const chatPartners = await User.find({
+      _id: { $in: chatPartnerIds },
+    }).select("-password");
     return res.status(200).json(chatPartners);
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
