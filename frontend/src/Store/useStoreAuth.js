@@ -26,7 +26,7 @@ export const useAuthStore = create((set) => ({
         try {
             set({isSigningUp:true})
             const res = await axiosInstance.post("/auth/signup",data)
-            set({authUser:res.data})
+            set({authUser:res.data.user})
             toast.success("Account Created Successfully")
         } catch (error) {
             console.log(error)
@@ -40,7 +40,7 @@ export const useAuthStore = create((set) => ({
         try {
             set({isLogingIn:true})
             const res = await axiosInstance.post("/auth/login",data)
-            set({authUser:res.data})
+            set({authUser:res.data.user})
             toast.success("Logged in Successfully")
         } catch (error) {
             console.log(error)
@@ -50,7 +50,4 @@ export const useAuthStore = create((set) => ({
         }
     },
 
-    accessTokenValidator : async(token)=>{
-        console.log(token)
-    }
 }));

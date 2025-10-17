@@ -13,10 +13,7 @@ const App = () => {
   useEffect(() => {
     checkAuth(); // ✅ call it (with parentheses)
   },[]);
-  useEffect(()=>{
-    console.log(authUser);
-    
-  })
+ 
 
   if (isCheckingAuth) {
     return (
