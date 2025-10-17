@@ -62,10 +62,10 @@ export const signup = async (req, res) => {
 
     const mailSend = await sendSignupEmail(user2.email, user2.fullName);
 
-    console.log("✅ Signup data:", user2.email,user2.fullName);
+
     res.cookie("accessToken", accessToken,option);
     res.cookie("refreshToken", refreshToken,option);
-    res.status(200).json({ message: "Signup data is valid!" });
+    res.status(200).json({ message: "Signup data is valid!"});
   } catch (error) {
     console.error("Signup error:", error);
     res.status(500).json({ error: "Internal Server Error" });

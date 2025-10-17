@@ -1,16 +1,12 @@
 import { Resend } from "resend";
 import "dotenv/config";
 
-
 const resend = new Resend(process.env.RESEND_API);
 
-
-
-
 export const sendSignupEmail = async (email, username) => {
-    if (!process.env.RESEND_API) {
-        throw new Error("RESEND_API environment variable is not defined");
-       }
+  if (!process.env.RESEND_API) {
+    throw new Error("RESEND_API environment variable is not defined");
+  }
   try {
     const message = await resend.emails.send({
       from: "ChatX <no-reply@pawpick.store>",
@@ -130,7 +126,6 @@ export const sendSignupEmail = async (email, username) => {
       `,
     });
 
-    console.log("✅ Signup email sent:", message);
     return { success: true, message };
   } catch (error) {
     console.error("❌ Failed to send signup email:", error);
