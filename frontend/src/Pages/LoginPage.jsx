@@ -34,7 +34,7 @@ const LoginPage = () => {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-3xl blur-2xl"></div>
                 <img
-                  src="/login.png"
+                  src="https://github.com/burakorkmez/chatify/blob/master/frontend/public/login.png?raw=true"
                   alt="People using mobile devices"
                   className="relative w-full h-auto object-contain drop-shadow-2xl"
                 />
