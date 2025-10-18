@@ -4,6 +4,7 @@ import {
   logout,
   profileUpdate,
   signup,
+  newTokens,
 } from "../controller/auth.controller.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
 import { rateLimit } from "../middleware/ratelimit.js";
@@ -18,5 +19,6 @@ route.get("/check", verifyJWT, (req, res) => {
   return res.status(200).json(req.user);
 });
 route.post("/update-profile", verifyJWT, profileUpdate);
+route.get("/refresh", newTokens);
 
 export default route;

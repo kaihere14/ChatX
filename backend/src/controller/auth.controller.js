@@ -167,3 +167,32 @@ export const profileUpdate = async(req,res)=>{
   }
 }
 
+export const newTokens = async (req,res)=>{
+  try {
+    const refreshToken2 = req.cookies.refreshToken
+    if(!refreshToken2){
+      return res.status(401).json({message:"Unauthorized"})
+    }
+    const decoded = jwt.verify(refreshToken2, process.env.REFRESH_TOKEN_SECRET)
+    const user = await User.findById(decoded.id)
+    if(!user){
+      return res.status(404).json({message:"User not found"})
+    }
+    const {accessToken,refreshToken} = await generateTokens(user._id)
+    const option = {
+      httpOnly : true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite : "strict"
+    }
+    res.cookie("accessToken", accessToken,option);
+    res.cookie("refreshToken", refreshToken,option);
+    return res.status(200).json({message:"Tokens refreshed",user:{
+      _id: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      profilePic: user.profilePic
+    }})
+  } catch (error) {
+    return res.status(500).json({message:"Internal server error",error:error.message})
+  }
+}

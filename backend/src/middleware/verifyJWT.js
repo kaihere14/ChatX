@@ -7,7 +7,7 @@ export const verifyJWT = async (req, res, next) => {
 
   try {
     if (!accessToken) {
-      return res.status(401).json({ message: "unauthorized request" });
+      return res.status(404).json({ message: "unauthorized request" });
     }
 
     try {
@@ -20,7 +20,7 @@ export const verifyJWT = async (req, res, next) => {
       req.user = user;
       return next();
     } catch (error) {
-      return res.status(401).json({ message: "unauthorized request" });
+      return res.status(404).json({ message: "unauthorized request" });
     }
 
     return next();

@@ -41,7 +41,14 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: res.data });
       get().connectSocket()
     } catch (error) {
-      console.log(error);
+      if(error.response.status === 404) {
+        const res2 = await axiosInstance.get("/auth/refresh");
+        set({ authUser: res2.data.user });
+        get().connectSocket()
+      }else{
+        toast.error("Unauthorized request");
+        set({ isCheckingAuth: false });
+      }
     } finally {
       set({ isCheckingAuth: false });
     }

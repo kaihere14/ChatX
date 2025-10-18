@@ -75,7 +75,7 @@ const ProfileHeader = () => {
             </div>
         </div>
 
-        <div className="flex gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <p className="text-gray-400 cursor-pointer hover:text-white" onClick={logout}>
             <LogOutIcon size={18} className="sm:hidden" />
             <LogOutIcon size={20} className="hidden sm:block" />
