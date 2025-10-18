@@ -3,7 +3,7 @@ import "dotenv/config";
 import path from "path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-const app = express();
+import { app,server } from "./database/socket.js";
 const __dirname = path.resolve();
 
 app.use(express.json({limit:"10mb"}));
@@ -31,7 +31,7 @@ if (process.env.NODE_ENV === "production") {
 
 connectDB()
   .then(() => {
-    app.listen(process.env.PORT, () => {
+    server.listen(process.env.PORT, () => {
       console.log("Server is running on port ", process.env.PORT);
     });
   })
