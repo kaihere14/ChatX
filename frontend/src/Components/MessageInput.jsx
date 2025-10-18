@@ -13,7 +13,7 @@ const MessageInput = () => {
 
     const fileInputRef = useRef(null)
 
-    const {sendMessage,isSoundEnabled} = useChatStore()
+    const {sendMessage,isSoundEnabled,setTypingStatus} = useChatStore()
     
     const handleSendMessage = (e)=>{
       e.preventDefault()
@@ -25,6 +25,16 @@ const MessageInput = () => {
 
       if(fileInputRef.current)fileInputRef.current.value = ""
     }
+    const handleChange = (e) => {
+      setText(e.target.value);
+      setTypingStatus(true);
+
+      isSoundEnabled && playRandomKeyStrokeSound();
+
+      setTimeout(() => {
+        setTypingStatus(false);
+      }, 1000); // 1000ms = 1 second after last keypress
+    };
 
 
     const handleImageChange = (e) => {
@@ -75,9 +85,9 @@ const MessageInput = () => {
             type="text"
             value={text}
             onChange={(e) => {
-              setText(e.target.value);
-              isSoundEnabled && playRandomKeyStrokeSound();
+              handleChange(e)
             }}
+            o
             className="flex-1 bg-slate-800/50 border border-slate-700/50 rounded-lg py-3 px-4 text-base"
             placeholder="Type your message..."
             style={{ fontSize: '16px' }}

@@ -4,7 +4,7 @@ import {X, ArrowLeft, Trash} from "lucide-react"
 import { useAuthStore } from '../Store/useStoreAuth'
 
 const ChatHeader = () => {
-  const {selectedUser,setSelectedUser,deleteMsg} = useChatStore()
+  const {selectedUser,setSelectedUser,deleteMsg,typingStatus} = useChatStore()
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
 const {onlineUsers} = useAuthStore()
@@ -57,7 +57,7 @@ const {onlineUsers} = useAuthStore()
               </div>
               <div className='pl-3 flex flex-col justify-center min-w-0 flex-1'>
                   <h1 className='capitalize text-base sm:text-base font-medium truncate'>{selectedUser.fullName}</h1>
-                  {onlineUsers.includes(selectedUser._id)?<p className='text-sm sm:text-sm text-gray-400'>Online</p>:<p className='text-sm sm:text-sm text-gray-400'>Offline</p>}
+                  {onlineUsers.includes(selectedUser._id)?(typingStatus ? <p className='text-sm sm:text-sm text-gray-400'>Typing...</p> : <p className='text-sm sm:text-sm text-gray-400'>Online</p>) : <p className='text-sm sm:text-sm text-gray-400'>Offline</p>}
               </div>
           </div>
           <div onClick={handleDeleteClick} className='h-10 w-10 mr-2 flex items-center justify-center cursor-pointer hover:bg-slate-700/50 rounded-lg transition-colors'>

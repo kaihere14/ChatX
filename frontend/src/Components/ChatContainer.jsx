@@ -11,7 +11,7 @@ import MessageInput from './MessageInput'
 
 
 const ChatContainer = () => {
-  const {selectedUser,messages,getMessage,isMessagesLoading,subscribeToMessage,unsubscribeFromMessages} = useChatStore()
+  const {selectedUser,messages,getMessage,isMessagesLoading,subscribeToMessage,unsubscribeFromMessages,getTypingStatus} = useChatStore()
   const {authUser}= useAuthStore()
   const messagesEndRef = useRef(null)
 
@@ -23,11 +23,12 @@ const ChatContainer = () => {
   useEffect(()=>{
     getMessage(selectedUser._id)
     subscribeToMessage()
-
+    getTypingStatus()
     return ()=>{
       unsubscribeFromMessages()
+
     }
-  },[selectedUser,getMessage,subscribeToMessage,unsubscribeFromMessages])
+  },[selectedUser,getMessage,subscribeToMessage,unsubscribeFromMessages,getTypingStatus])
 
   useEffect(() => {
     scrollToBottom()

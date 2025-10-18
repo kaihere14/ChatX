@@ -38,6 +38,15 @@ io.on("connection",(socket)=>{
     io.emit('getOnlineUser',Object.keys(userSocketMap))
 
     })
+
+    socket.on("typingStatus",(data)=>{
+        const {status,selectedUserId} = data
+        if(selectedUserId === userId) return
+        const scoketId = userSocketMap[selectedUserId]
+        if(scoketId){
+            io.to(scoketId).emit("typingStatus",status)
+        }
+    })
 })
 
 
