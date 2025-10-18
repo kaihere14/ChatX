@@ -7,7 +7,7 @@ import { ImageIcon,SendIcon,XIcon } from 'lucide-react';
 
 const MessageInput = () => {
     const {playRandomKeyStrokeSound} = useKeyboardSound()
-
+    const typingTimeoutRef = useRef(null);
     const [text, setText] = useState("");
     const [imagePreview, setImagePreview] = useState("")
 
@@ -30,8 +30,8 @@ const MessageInput = () => {
       setTypingStatus(true);
 
       isSoundEnabled && playRandomKeyStrokeSound();
-
-      setTimeout(() => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = setTimeout(() => {
         setTypingStatus(false);
       }, 1000); // 1000ms = 1 second after last keypress
     };
