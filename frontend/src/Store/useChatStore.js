@@ -13,7 +13,7 @@ export const useChatStore = create((set, get) => ({
   isMessagesLoading: false,
   isSoundEnabled: JSON.parse(localStorage.getItem("isSoundEnabled")) ?? false,
 
-  toggleSound: () => {
+  toggleSound: () => {  
     const current = get().isSoundEnabled;
     const next = !current;
     localStorage.setItem("isSoundEnabled", JSON.stringify(next));
@@ -138,5 +138,17 @@ export const useChatStore = create((set, get) => ({
     const socket = useAuthStore.getState().socket;
     socket.off("newMessage");
   },
+
+  deleteMsg : async()=>{
+    try {
+      const { selectedUser } = get();
+      const { data } = await axiosInstance.delete(`/message/delete-messages/${selectedUser._id}`);
+      toast.success("Messages deleted successfully");
+    set({ messages: [] });  
+    } catch (error) {
+      const message = error?.response?.data?.message || "Failed to delete messages";
+      toast.error(message);
+    }
+  }
   
 }));

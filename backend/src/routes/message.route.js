@@ -5,6 +5,7 @@ import {
   getAllContacts,
   getMessageBId,
   sendMsg,
+  deleteMessage,
 } from "../controller/message.controller.js";
 import { verifyJWT } from "../middleware/verifyJWT.js";
 
@@ -16,5 +17,6 @@ route.get("/contacts", getAllContacts);
 route.get("/chats", chats);
 route.get("/:id", getMessageBId);
 route.post("/send/:id", sendMsg);
+route.delete("/delete-messages/:id", verifyJWT, deleteMessage);
 
 export default route;

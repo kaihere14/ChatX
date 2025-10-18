@@ -102,3 +102,27 @@ export const chats = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const loggedId = req.user._id;
+    const { id } = req.params;
+
+
+    const result = await Message.deleteMany({
+      $or: [
+        { senderId: loggedId, receiverId: id },
+        { senderId: id, receiverId: loggedId },
+      ],
+    });
+
+    return res.status(200).json({
+      message: "Messages deleted successfully",
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    console.error("Error deleting messages:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

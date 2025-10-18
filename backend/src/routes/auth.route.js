@@ -21,4 +21,5 @@ route.get("/check", verifyJWT, (req, res) => {
 route.post("/update-profile", verifyJWT, profileUpdate);
 route.get("/refresh", newTokens);
 
+
 export default route;

@@ -1,10 +1,10 @@
 import React , {useEffect} from 'react'
 import { useChatStore } from '../Store/useChatStore'
-import {X, ArrowLeft} from "lucide-react"
+import {X, ArrowLeft, Trash} from "lucide-react"
 import { useAuthStore } from '../Store/useStoreAuth'
 
 const ChatHeader = () => {
-  const {selectedUser,setSelectedUser} = useChatStore()
+  const {selectedUser,setSelectedUser,deleteMsg} = useChatStore()
 
 const {onlineUsers} = useAuthStore()
 
@@ -18,6 +18,7 @@ const {onlineUsers} = useAuthStore()
     // cleanup function
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [setSelectedUser]);
+
 
   return (
     <div className='w-full h-16 sm:h-20 bg-[#27223C]/50 backdrop-blur-[10px] flex justify-between items-center p-3 sm:p-4'>
@@ -43,6 +44,10 @@ const {onlineUsers} = useAuthStore()
                 <h1 className='capitalize text-sm sm:text-base font-medium truncate'>{selectedUser.fullName}</h1>
                 {onlineUsers.includes(selectedUser._id)?<p className='text-xs sm:text-sm text-gray-400'>Online</p>:<p className='text-xs sm:text-sm text-gray-400'>Offline</p>}
             </div>
+        </div>
+        <div onClick={()=>deleteMsg()} className='h-8 w-8 flex items-center justify-center cursor-pointer hover:bg-slate-700/50 rounded-lg transition-colors'>
+          <Trash size={16} className="sm:hidden" />
+          <Trash size={20} className="hidden sm:block" />
         </div>
         <div onClick={()=>setSelectedUser(null)} className='h-8 w-8 flex items-center justify-center cursor-pointer hover:bg-slate-700/50 rounded-lg transition-colors'>
           <X size={16} className="sm:hidden" />
