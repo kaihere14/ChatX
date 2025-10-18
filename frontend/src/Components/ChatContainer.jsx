@@ -11,7 +11,7 @@ import MessageInput from './MessageInput'
 
 
 const ChatContainer = () => {
-  const {selectedUser,messages,getMessage,isMessagesLoading} = useChatStore()
+  const {selectedUser,messages,getMessage,isMessagesLoading,subscribeToMessage} = useChatStore()
   const {authUser}= useAuthStore()
   const messagesEndRef = useRef(null)
 
@@ -22,13 +22,15 @@ const ChatContainer = () => {
 
   useEffect(()=>{
     getMessage(selectedUser._id)
-  },[selectedUser,getMessage])
+    subscribeToMessage()
+
+  },[selectedUser,getMessage,subscribeToMessage])
 
   useEffect(() => {
     scrollToBottom()
   }, [messages])
 
-console.log(authUser)
+
 
 
 return (
@@ -50,10 +52,8 @@ return (
                   ? "bg-cyan-600 text-white"
                   : "bg-slate-800 text-slate-200"
               }`}
-              
-            >
-              <div ref={messagesEndRef} />
-              {msg.image && (
+              >
+                {msg.image && (
                 <img
                   src={msg.image}
                   alt="Shared"
@@ -71,9 +71,9 @@ return (
               
             </div>
           </div>
-        ))}
-        
-      </div>
+         ))}
+         <div ref={messagesEndRef} />
+       </div>
     ) :isMessagesLoading?(<MessagesLoadingSkeleton/>) :(
       <NoChatHistoryPlaceholder name={selectedUser.fullName} />
     )}

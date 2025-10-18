@@ -17,6 +17,11 @@ const io = new Server(server,{
 
 io.use(verifySocket);
 
+export const getSocketId = (recieverId)=>{
+   const scoketId = userSocketMap[recieverId]
+   return scoketId
+}
+
 const userSocketMap = {}; // {userId : scoketId }
 
 io.on("connection",(socket)=>{

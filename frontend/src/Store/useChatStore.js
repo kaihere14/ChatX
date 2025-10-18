@@ -83,23 +83,54 @@ export const useChatStore = create((set, get) => ({
       text: msgData.text,
       image: msgData.image,
       createdAt: new Date().toISOString(),
-      isOptimistic: true, // flag to identify optimistic messages (optional)
+      isOptimistic: true,
     };
-    // immidetaly update the ui by adding the message
+
+    // Add optimistic message immediately
     set({ messages: [...messages, optimisticMessage] });
+
     try {
       const { data } = await axiosInstance.post(
         `/message/send/${selectedUser._id}`,
         msgData
       );
-      set({ messages: messages.concat(data) });
-    } catch (error) {
-      console.log(error);
-      const message =
-        error?.response?.data?.error || "Failed to fetch messages";
-      toast.error(message);
-      set({ messages: messages});
 
+      // Remove optimistic message and add real one
+      const updatedMessages = messages.filter((msg) => msg._id !== tempId);
+      set({ messages: [...updatedMessages, data] });
+    } catch (error) {
+      console.log("Error sending message:", error);
+      const message =
+        error?.response?.data?.message || "Failed to send message";
+      toast.error(message);
+
+      // Remove optimistic message on error
+      const updatedMessages = messages.filter((msg) => msg._id !== tempId);
+      set({ messages: updatedMessages });
     }
+  },
+
+  subscribeToMessage: () => {
+    const { selectedUser } = get();
+
+    if (!selectedUser) return;
+    
+    const socket = useAuthStore.getState().socket;
+
+    // Remove existing listeners to prevent duplicates
+    socket.off("newMessage");
+
+    socket.on("newMessage", (newMessage) => {
+      const isMessageSentFromSelectedUser = newMessage.senderId ===selectedUser._id
+      if(!isMessageSentFromSelectedUser) return
+      const currentMsg = get().messages;
+      // Check if message already exists to prevent duplicates
+      const messageExists = currentMsg.some(
+        (msg) => msg._id === newMessage._id
+      );
+      if (!messageExists) {
+        set({ messages: [...currentMsg, newMessage] });
+      }
+    });
   },
 }));
