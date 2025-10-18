@@ -40,7 +40,7 @@ return (
   <>
     <ChatHeader />
     {messages.length > 0 &&!isMessagesLoading ? (
-      <div className="w-full h-full p-2 sm:p-4 mx-auto space-y-4 sm:space-y-6 overflow-y-auto">
+      <div className="w-full h-full p-4 mx-auto space-y-6 overflow-y-auto">
         
         {messages.map((msg) => (
           <div
@@ -50,7 +50,7 @@ return (
             }`}
           >
             <div
-              className={`chat-bubble mt-2 sm:mt-5 relative bottom-2 sm:bottom-10 max-w-xs sm:max-w-md lg:max-w-lg ${
+              className={`chat-bubble mt-5 relative bottom-10 max-w-sm sm:max-w-md lg:max-w-lg ${
                 msg.senderId === authUser._id
                   ? "bg-cyan-600 text-white"
                   : "bg-slate-800 text-slate-200"
@@ -60,10 +60,10 @@ return (
                 <img
                   src={msg.image}
                   alt="Shared"
-                  className="rounded-lg h-32 sm:h-48 object-cover w-full"
+                  className="rounded-lg h-48 object-cover w-full"
                 />
               )}
-              {msg.text && <p className="mt-2 text-sm sm:text-base break-words">{msg.text}</p>}
+              {msg.text && <p className="mt-2 text-base break-words">{msg.text}</p>}
               
               <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
                 {new Date(msg.createdAt).toLocaleTimeString(undefined, {

@@ -34,9 +34,9 @@ if(isUsersLoading){
 return (
     <div className='flex flex-col gap-2 sm:gap-3'>
         {chats.map((val)=>(
-          <div onClick={()=>setSelectedUser(val)} key={val._id} className='cursor-pointer w-full h-16 sm:h-20 bg-[#431c4c] hover:bg-[#2c1830] rounded-xl sm:rounded-2xl flex items-center p-3 sm:p-4 transition-colors'>
+          <div onClick={()=>setSelectedUser(val)} key={val._id} className='cursor-pointer w-full h-20 bg-[#431c4c] hover:bg-[#2c1830] rounded-2xl flex items-center p-4 transition-colors'>
             <div className={`avatar ${ onlineUsers.includes(val._id)? "avatar-online":"avatar-offline"}`}>
-              <div className='h-8 w-8 sm:h-10 sm:w-10 rounded-full overflow-hidden'>
+              <div className='h-12 w-12 rounded-full overflow-hidden'>
                 <img className='h-full w-full object-cover' src={
                         
                         val?.profilePic ||
@@ -44,9 +44,9 @@ return (
                       }alt="" />
               </div>
             </div>
-            <div className='pl-3 sm:pl-4 min-w-0 flex-1'>
-              <h3 className='text-sm sm:text-base font-medium truncate'>{val.fullName}</h3>
-              <p className='text-xs sm:text-sm text-gray-400 truncate'>send message</p>
+            <div className='pl-4 min-w-0 flex-1'>
+              <h3 className='text-base font-medium truncate'>{val.fullName}</h3>
+              <p className='text-sm text-gray-400 truncate'>send message</p>
             </div>
         </div>
         ))}
