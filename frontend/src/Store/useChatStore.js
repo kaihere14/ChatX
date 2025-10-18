@@ -168,5 +168,10 @@ export const useChatStore = create((set, get) => ({
     });
   },
 
+  unsubscribeFromTypingStatus : ()=>{
+    const socket = useAuthStore.getState().socket;
+    socket.off("typingStatus");
+  }
+
 
 }));

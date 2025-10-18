@@ -11,7 +11,7 @@ import MessageInput from './MessageInput'
 
 
 const ChatContainer = () => {
-  const {selectedUser,messages,getMessage,isMessagesLoading,subscribeToMessage,unsubscribeFromMessages,getTypingStatus} = useChatStore()
+  const {selectedUser,messages,getMessage,isMessagesLoading,subscribeToMessage,unsubscribeFromMessages,getTypingStatus,unsubscribeFromTypingStatus} = useChatStore()
   const {authUser}= useAuthStore()
   const messagesEndRef = useRef(null)
 
@@ -26,7 +26,7 @@ const ChatContainer = () => {
     getTypingStatus()
     return ()=>{
       unsubscribeFromMessages()
-
+      unsubscribeFromTypingStatus()
     }
   },[selectedUser,getMessage,subscribeToMessage,unsubscribeFromMessages,getTypingStatus])
 
