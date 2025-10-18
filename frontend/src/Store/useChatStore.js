@@ -7,6 +7,7 @@ export const useChatStore = create((set, get) => ({
   allContact: [],
   chats: [],
   messages: [],
+  typingStatus: false,
   activeTab: "chats",
   selectedUser: null,
   isUsersLoading: false,
@@ -149,6 +150,28 @@ export const useChatStore = create((set, get) => ({
       const message = error?.response?.data?.message || "Failed to delete messages";
       toast.error(message);
     }
+  },
+
+  setTypingStatus: (status) => {
+    const { selectedUser } = get(); 
+    if(!selectedUser) return;
+    const socket = useAuthStore.getState().socket;
+    socket.emit("typingStatus", { status, selectedUserId:selectedUser._id });
+  },
+
+  getTypingStatus: () => {
+    const { selectedUser } = get();
+    if(!selectedUser) return;
+    const socket = useAuthStore.getState().socket;
+    socket.on("typingStatus", (status) => {
+      set({ typingStatus: status });
+    });
+  },
+
+  unsubscribeFromTypingStatus : ()=>{
+    const socket = useAuthStore.getState().socket;
+    socket.off("typingStatus");
   }
-  
+
+
 }));
