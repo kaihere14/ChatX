@@ -1,16 +1,17 @@
 import Message from "../model/message.model.js";
 import { User } from "../model/user.model.js";
 import cloudinary from "../database/cloudinary.js";
+import { getSocketId } from "../database/socket.js";
+import { io } from "../database/socket.js";
 
 export const getAllContacts = async (req, res) => {
-  
   try {
     const loggedUser = req.user._id;
     const filteredUser = await User.find({ _id: { $ne: loggedUser } }).select(
       "-password"
     );
 
-    return res.status(200).json( filteredUser );
+    return res.status(200).json(filteredUser);
   } catch (error) {
     return res.status(500).json({ message: "Internal server error" });
   }
@@ -18,7 +19,6 @@ export const getAllContacts = async (req, res) => {
 
 export const getMessageBId = async (req, res) => {
   try {
-
     const loggedId = req.user._id;
 
     const { id } = req.params;
@@ -39,7 +39,7 @@ export const getMessageBId = async (req, res) => {
 export const sendMsg = async (req, res) => {
   try {
     const { text, image } = req.body;
-    const loggedId = req.user.id;
+    const loggedId = req.user._id;
     const { id } = req.params;
     let imageUrl;
 
@@ -53,7 +53,7 @@ export const sendMsg = async (req, res) => {
         .status(400)
         .json({ message: "Cannot send message to youreself" });
     }
-  
+
     if (image) {
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
@@ -65,6 +65,12 @@ export const sendMsg = async (req, res) => {
       receiverId: id,
       image: imageUrl,
     });
+
+    const scoketId = getSocketId(id);
+
+    if (scoketId) {
+      io.to(scoketId).emit("newMessage", message);
+    }
 
     return res.status(201).json(message);
   } catch (error) {

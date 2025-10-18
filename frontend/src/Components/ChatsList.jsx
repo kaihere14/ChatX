@@ -29,7 +29,7 @@ if(isUsersLoading){
     </div>
   )
 }
-console.log(chats)
+
 
 return (
     <div className='flex flex-col gap-3'>
