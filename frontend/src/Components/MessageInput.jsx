@@ -17,8 +17,8 @@ const MessageInput = () => {
     
     const handleSendMessage = (e)=>{
       e.preventDefault()
-      if(!text && !imagePreview) return
-      if(!isSoundEnabled) playRandomKeyStrokeSound
+      if(!text.trim() && !imagePreview) return
+      if(isSoundEnabled) playRandomKeyStrokeSound()
       sendMessage({text:text.trim(),image:imagePreview})
       setText('')
       setImagePreview('')
