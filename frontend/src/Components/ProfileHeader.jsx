@@ -30,19 +30,19 @@ const ProfileHeader = () => {
     }
   }
   return (
-    <div className="pt-4 sm:pt-6 px-3 border-b-slate-700/50">
+    <div className="pt-6 px-4 border-b-slate-700/50">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           {/* Avatar */}
           <div className="avatar avatar-online">
             
               <button
                 type="button"
-                className="size-10 sm:size-12 cursor-pointer rounded-full overflow-hidden relative group"
+                className="size-14 cursor-pointer rounded-full overflow-hidden relative group"
                 onClick={() => fileInputRef.current?.click()}
               >
                 {photoUploading&&<div className="absolute z-[999] h-full  w-full  bg-white/10 rounded-full backdrop-blur-[1px]">
-                  <span className="loading loading-spinner loading-lg sm:loading-xl mt-1 sm:mt-2"></span>
+                  <span className="loading loading-spinner loading-xl mt-2"></span>
                 </div>}
                 <img
                   src={
@@ -69,16 +69,15 @@ const ProfileHeader = () => {
             </div>
 
             {/* Username */}
-            <div className="text-slate-200 font-medium text-sm sm:text-base min-w-0 flex-1">
+            <div className="text-slate-200 font-medium text-base min-w-0 flex-1">
               <h3 className="truncate">{authUser.fullName}</h3>
-              <p className="text-slate-400 text-xs sm:text-sm">Online</p>
+              <p className="text-slate-400 text-sm">Online</p>
             </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
           <p className="text-gray-400 cursor-pointer hover:text-white" onClick={logout}>
-            <LogOutIcon size={18} className="sm:hidden" />
-            <LogOutIcon size={20} className="hidden sm:block" />
+            <LogOutIcon size={24} />
           </p>
           <button
             className="text-slate-400 hover:text-slate-200 transition-colors"
@@ -90,9 +89,9 @@ const ProfileHeader = () => {
             }}
           >
             {isSoundEnabled ? (
-              <VolumeIcon className="size-5 sm:size-6" />
+              <VolumeIcon className="size-6" />
             ) : (
-              <VolumeOffIcon className="size-5 sm:size-6" />
+              <VolumeOffIcon className="size-6" />
             )}
           </button>
         </div>
