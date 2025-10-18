@@ -6,6 +6,7 @@ import ChatsList from '../Components/ChatsList'
 import ContactList from '../Components/ContactList'
 import ChatContainer from '../Components/ChatContainer'
 import NoConversationPlaceHolder from '../Components/NoConversationPlaceHolder'
+import { ArrowLeft } from 'lucide-react'
 
 
 const ChatPage = () => {
@@ -13,10 +14,13 @@ const ChatPage = () => {
   const {activeTab,selectedUser} = useChatStore()
 
   return (
-    <div className='relative w-full  h-screen flex '>
+    <div className='relative w-full h-screen flex'>
       
-      {/* Left side */}
-      <div className='w-80 bg-slate-800/50 backdrop-blur-sm flex flex-col'>
+      {/* Left side - Sidebar */}
+      <div className={`
+        ${selectedUser ? 'hidden lg:flex' : 'flex'}
+        w-full lg:w-80 h-full bg-slate-800/50 backdrop-blur-sm flex-col
+      `}>
     
         <ProfileHeader/>
         <ActiveTabSwitch/>
@@ -27,15 +31,13 @@ const ChatPage = () => {
 
       </div>
 
-      {/* Right Side */}
-
-      <div className='flex-1 flex flex-col bg-slate-900/50 backdrop-blur-sm'>
-      {selectedUser?<ChatContainer/>:<NoConversationPlaceHolder/>}
+      {/* Right Side - Chat Area */}
+      <div className={`
+        ${selectedUser ? 'flex' : 'hidden lg:flex'}
+        flex-1 flex-col bg-slate-900/50 backdrop-blur-sm min-w-0
+      `}>
+        {selectedUser ? <ChatContainer/> : <NoConversationPlaceHolder/>}
       </div>
-
-
-
-
 
     </div>
   )
