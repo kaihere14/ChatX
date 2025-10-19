@@ -52,16 +52,17 @@ export const signup = async (req, res) => {
       password,
     });
 
-    const option = {
-        httpOnly : true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite : "strict"
-    }
-
-    const { accessToken, refreshToken } = generateTokens(user2._id);
-
     const mailSend = await sendSignupEmail(user2.email, user2.fullName);
 
+
+    const {accessToken,refreshToken} = await generateTokens(user2._id)
+
+
+    const option = {
+      httpOnly : true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite : "strict"
+  }
 
     res.cookie("accessToken", accessToken,option);
     res.cookie("refreshToken", refreshToken,option);
@@ -104,7 +105,7 @@ export const login = async (req, res) => {
       const {accessToken,refreshToken} = await generateTokens(user._id)
 
      
-     const option = {
+    const option = {
         httpOnly : true,
         secure: process.env.NODE_ENV === "production",
         sameSite : "strict"
