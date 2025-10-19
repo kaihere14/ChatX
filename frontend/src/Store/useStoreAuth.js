@@ -39,13 +39,13 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.get("/auth/check");
 
       set({ authUser: res.data });
-      get().connectSocket()
+      get().connectSocket();
     } catch (error) {
-      if(error.response.status === 404) {
+      if (error.response.status === 404) {
         const res2 = await axiosInstance.get("/auth/refresh");
         set({ authUser: res2.data.user });
-        get().connectSocket()
-      }else{
+        get().connectSocket();
+      } else {
         toast.error("Unauthorized request");
         set({ isCheckingAuth: false });
       }
@@ -74,7 +74,7 @@ export const useAuthStore = create((set, get) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data.user });
       toast.success("Logged in Successfully");
-      get().connectSocket()
+      get().connectSocket();
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.error);
@@ -88,7 +88,7 @@ export const useAuthStore = create((set, get) => ({
       await axiosInstance.post("/auth/logout");
       set({ authUser: "" });
       toast.success("Logged out Successfully");
-      get().disconnectSocket()
+      get().disconnectSocket();
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.error);
@@ -106,6 +106,30 @@ export const useAuthStore = create((set, get) => ({
       toast.error(error.response.data.error);
     } finally {
       set({ photoUploading: false });
+    }
+  },
+
+  getOtp: async (email) => {
+    try {
+      await axiosInstance.post("/auth/forgotOtp", { email });
+      toast.success("Otp sent Successfully");
+      return true;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.error || "Failed to send otp");
+      return false;
+    }
+  },
+
+  changePass: async (email, otp, password) => {
+    try {
+      await axiosInstance.post("/auth/changepass", { email, otp, password });
+      toast.success("Password changed successfully");
+      return true;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.error || "Invalid Otp");
+      return false;
     }
   },
 }));

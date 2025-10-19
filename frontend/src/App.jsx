@@ -6,6 +6,7 @@ import LoginPage from "./Pages/LoginPage";
 import { useAuthStore } from "./Store/useStoreAuth";
 import PageLoader from "./Components/Pageloader";
 import { Toaster } from 'react-hot-toast';
+import ForgotPass from "./Pages/ForgotPass";
 
 const App = () => {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
@@ -36,6 +37,7 @@ const App = () => {
         <Route path="/" element={authUser?<ChatPage />:<Navigate to="/login"/>} />
         <Route path="/login" element={authUser?<Navigate to="/"/>:<LoginPage />} />
         <Route path="/signup" element={authUser?<Navigate to="/"/>:<SignupPage />} />
+        <Route path="/forgot-password" element={authUser?<Navigate to="/"/>:<ForgotPass />} />
       </Routes>
     
     </div>
