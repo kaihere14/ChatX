@@ -7,6 +7,7 @@
 
 ---
 
+
 ## Overview  
 
 ChatX is a full‑stack, **real‑time** messaging platform that lets users register, log in, and exchange messages instantly. It combines a modern React UI with a lightweight Express 5 API and Socket.io for bidirectional communication. All data is persisted in MongoDB, and the project ships with Docker‑ready scripts for easy deployment.
