@@ -1,3 +1,4 @@
+
 # ChatX  
 
 **Real‑time chat application built with React, Vite, Tailwind CSS, Express 5, Socket.io 4 and MongoDB.**  
@@ -86,7 +87,7 @@ root
 
 ---  
 
-## Getting Started  
+## 🚀 Getting Started  
 
 ### Prerequisites  
 
@@ -101,8 +102,6 @@ root
 ### Environment variables  
 
 Create a `.env` file in the **backend** folder (copy from `.env.example` if present):
-
-```dotenv
 # Server
 PORT=5000
 NODE_ENV=development
@@ -132,7 +131,6 @@ RESEND_API_KEY=your_resend_api_key
 # Clone the repo
 git clone https://github.com/kaihere14/ChatX.git
 cd ChatX
-
 # Install both backend and frontend dependencies and build the frontend
 npm run build   # runs npm install in both sub‑projects and builds the frontend
 ```
